@@ -13,7 +13,7 @@ set -e
 set -o pipefail
 
 # Check the number of arguments passed.
-if [ "$#" -ne 2 ]; then
+if [ "$#" -ne 3 ]; then
     echo "Error: Invalid or insufficient arguments provided!" >&2
     echo "Usage: $0 <GITHUB_TOKEN> <WORK_DIR>" >&2
     exit 1
@@ -27,25 +27,8 @@ VERSION_TYPE=$3 # possible values: major, minor, patch
 BUILD_DIRECTORY="$WORK_DIR/build"
 RELEASE_DIRECTORY="$BUILD_DIRECTORY/releases"
 
-# Configuration variables.
-GIT_EMAIL="iam-cloud@wso2.com"
-GIT_USERNAME="wso2-iam-cloud-bot"
-UPSTREAM_REPO_URL="https://github.com/wso2/open-mcp-auth-proxy.git"
-UPSTREAM_BRANCH="main"
-
-# Configure git.
-git config --global user.email "${GIT_EMAIL}"
-git config --global user.name "${GIT_USERNAME}"
-
 # Navigate to the working directory.
 cd "${WORK_DIR}"
-
-# Set 'origin' to point to the upstream repository.
-git remote set-url origin "${UPSTREAM_REPO_URL}"
-
-# Ensure the latest changes are pulled.
-git checkout ${UPSTREAM_BRANCH}
-git pull
 
 # Create the release directory.
 if [ ! -d "$RELEASE_DIRECTORY" ]; then
@@ -88,9 +71,10 @@ for os in "${oses[@]}"; do
   os_dir="../$os"
   
   if [ -d "$os_dir" ]; then
-    release_artifact_folder="openmcpauthproxy_${os}-v${CURRENT_VERSION}"
+    release_artifact_folder="openmcpauthproxy_${os}-v${NEW_VERSION}"
     mkdir -p "$release_artifact_folder"
-    cp -r "$os_dir/*" "$release_artifact_folder"
+
+    cp -r $os_dir/* "$release_artifact_folder"
 
     # Zip the release package.
     zip_file="$release_artifact_folder.zip"
