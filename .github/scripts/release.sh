@@ -12,12 +12,6 @@
 set -e
 set -o pipefail
 
-# Check the number of arguments passed.
-if [ "$#" -ne 3 ]; then
-    echo "Error: Invalid or insufficient arguments provided!" >&2
-    echo "Usage: $0 <GITHUB_TOKEN> <WORK_DIR>" >&2
-    exit 1
-fi
 UPSTREAM_BRANCH="main"
 
 # Assign command line arguments to variables.
@@ -25,7 +19,7 @@ GIT_TOKEN=$1
 WORK_DIR=$2
 VERSION_TYPE=$3 # possible values: major, minor, patch
 
- Check if GIT_TOKEN is empty
+# Check if GIT_TOKEN is empty
 if [ -z "$GIT_TOKEN" ]; then
   echo "❌ Error: GIT_TOKEN is not set."
   exit 1
