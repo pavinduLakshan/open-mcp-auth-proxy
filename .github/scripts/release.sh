@@ -50,13 +50,8 @@ else
   rm -rf "$RELEASE_DIRECTORY"/*
 fi
 
-# Extract current version.
-echo $(git describe --tags --abbrev=0 2>/dev/null)
-
-CURRENT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null)
-if [ -z "$CURRENT_VERSION" ]; then
-  CURRENT_VERSION="0.0.0"
-fi
+CURRENT_VERSION=$(git describe --tags --abbrev=0)
+echo "current version: $CURRENT_VERSION"
 
 IFS='.' read -r MAJOR MINOR PATCH <<< "${CURRENT_VERSION}"
 
