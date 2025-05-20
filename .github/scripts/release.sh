@@ -52,7 +52,12 @@ fi
 
 # Extract current version.
 echo $(git describe --tags --abbrev=0 2>/dev/null)
-CURRENT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "0.0.0")
+
+CURRENT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null)
+if [ -z "$CURRENT_VERSION" ]; then
+  CURRENT_VERSION="0.0.0"
+fi
+
 IFS='.' read -r MAJOR MINOR PATCH <<< "${CURRENT_VERSION}"
 
 # Determine which part to increment
